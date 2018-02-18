@@ -1,5 +1,6 @@
 from flask import Flask, request, abort
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from flask_login import login_required
 from database import init_db
 from model import User
@@ -9,11 +10,12 @@ import pdb
 import tax
 
 app = Flask(__name__)
+CORS(app)
 
 init_db()
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/api', methods=['GET', 'POST'])
 def index():
 	return "hello world"
 
@@ -25,7 +27,7 @@ def shutdown_session(exception=None):
 def str2bool(v):
   return v.lower() in ("yes", "true", "t", "1")
 
-@app.route('/get_saving_data', methods=['GET'])
+@app.route('/api/get_saving_data', methods=['GET'])
 def get_saving_data():
 	print('saving data')
 	username = request.args.get('username')
@@ -58,7 +60,7 @@ def get_saving_data():
 	print(data)
 	return jsonify(data)
 
-@app.route('/create_user', methods = ['POST'])
+@app.route('/api/create_user', methods = ['POST'])
 def create_user():
 	print ('create_user')
 	print (request.json)
